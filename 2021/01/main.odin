@@ -135,7 +135,7 @@ main :: proc() {
 }
 
 solve_part1 :: proc(input: string) -> (increases: int) {
-	measurements := slice.mapper(strings.split(input, "\n"), str_to_int)
+	measurements := slice.mapper(strings.split(input, "\n"), strconv.atoi)
 	current_depth := measurements[0]
 	
 	for depth in measurements[1:] {
@@ -147,7 +147,7 @@ solve_part1 :: proc(input: string) -> (increases: int) {
 }
 
 solve_part2 :: proc(input: string) -> (increases: int) {
-	measurements := slice.mapper(strings.split(input, "\n"), str_to_int)
+	measurements := slice.mapper(strings.split(input, "\n"), strconv.atoi)
 	current_sum := math.sum(measurements[0:3])
 	
 	for i := 1; i + 2 < len(measurements); i += 1 {
@@ -157,16 +157,6 @@ solve_part2 :: proc(input: string) -> (increases: int) {
 	}
 
 	return
-}
-
-@(private)
-str_to_int :: proc(str: string) -> int {
-	n, ok := strconv.parse_int(str)
-	if !ok {
-		return 0
-	}
-
-	return n
 }
 
 @(test)

@@ -95,19 +95,9 @@ solve_part2 :: proc(input: string) -> (sum: int) {
 
 @(private)
 dimensions :: proc(line: string) -> (int, int, int) {
-	d := slice.mapper(strings.split(line, "x"), str_to_int)
+	d := slice.mapper(strings.split(line, "x"), strconv.atoi)
 	return d[0], d[1], d[2]
 
-}
-
-@(private)
-str_to_int :: proc(str: string) -> int {
-	n, ok := strconv.parse_int(str)
-	if !ok {
-		return 0
-	}
-
-	return n
 }
 
 @(test)

@@ -83,13 +83,13 @@ just too much noise in the data.
 Instead, consider sums of a three-measurement sliding window. Again considering
 the above example:
 
-199  A      
-200  A B    
-208  A B C  
+199  A
+200  A B
+208  A B C
 210    B C D
 200  E   C D
 207  E F   D
-240  E F G  
+240  E F G
 269    F G H
 260      G H
 263        H
@@ -132,7 +132,7 @@ main :: proc() {
 part1 :: proc(input: string) -> (increases: int) {
 	measurements := slice.mapper(strings.split(input, "\n"), strconv.atoi)
 	current_depth := measurements[0]
-	
+
 	for depth in measurements[1:] {
 		if depth > current_depth do increases += 1
 		current_depth = depth
@@ -143,12 +143,9 @@ part1 :: proc(input: string) -> (increases: int) {
 
 part2 :: proc(input: string) -> (increases: int) {
 	measurements := slice.mapper(strings.split(input, "\n"), strconv.atoi)
-	current_sum := math.sum(measurements[0:3])
-	
-	for i := 1; i + 2 < len(measurements); i += 1 {
-		new_sum := math.sum(measurements[i:i+3])
-		if new_sum > current_sum do increases += 1
-		current_sum = new_sum
+
+	for i := 3; i < len(measurements); i += 1 {
+		if measurements[i] > measurements[i-3] do increases += 1
 	}
 
 	return

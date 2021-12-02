@@ -1,11 +1,11 @@
 package main
 
 import "core:fmt"
-import "core:os"
-import "core:path"
 import "core:strconv"
 import "core:strings"
 import "core:testing"
+
+import "../../aoc"
 
 /*
 
@@ -107,17 +107,12 @@ you get if you multiply your final horizontal position by your final depth?
 */
 
 main :: proc() {
-	data, ok := os.read_entire_file(path.join(path.dir(#file), "./input.txt"))
-	if !ok {
-		fmt.println("Failed to read puzzle input.")
-		os.exit(1)
-	}
-
-	fmt.println("part1 answer is", solve_part1(string(data)))
-	fmt.println("part2 answer is", solve_part2(string(data)))
+	input := aoc.must_read_input("2021/02")
+	fmt.println("part1", part1(input))
+	fmt.println("part2", part2(input))
 }
 
-solve_part1 :: proc(input: string) -> int {
+part1 :: proc(input: string) -> int {
 	position, depth : int
 	for line in strings.split(input, "\n") {
 		parts := strings.split(line, " ")
@@ -136,7 +131,7 @@ solve_part1 :: proc(input: string) -> int {
 	return position * depth
 }
 
-solve_part2 :: proc(input: string) -> int {
+part2 :: proc(input: string) -> int {
 	position, depth, aim : int
 	for line in strings.split(input, "\n") {
 		parts := strings.split(line, " ")
@@ -157,13 +152,13 @@ solve_part2 :: proc(input: string) -> int {
 }
 
 @(test)
-test_solve_part1 :: proc(t: ^testing.T) {
+test_part1 :: proc(t: ^testing.T) {
 	input := "forward 5\ndown 5\nforward 8\nup 3\ndown 8\nforward 2"
-	testing.expect_value(t, solve_part1(input), 150)
+	testing.expect_value(t, part1(input), 150)
 }
 
 @(test)
-test_solve_part2 :: proc(t: ^testing.T) {
+test_part2 :: proc(t: ^testing.T) {
 	input := "forward 5\ndown 5\nforward 8\nup 3\ndown 8\nforward 2"
-	testing.expect_value(t, solve_part2(input), 900)
+	testing.expect_value(t, part2(input), 900)
 }

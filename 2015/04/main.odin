@@ -2,11 +2,11 @@ package main
 
 import "core:crypto/md5"
 import "core:fmt"
-import "core:os"
-import "core:path"
 import "core:strconv"
 import "core:strings"
 import "core:testing"
+
+import "../../aoc"
 
 /*
 
@@ -38,17 +38,12 @@ Now find one that starts with six zeroes.
 */
 
 main :: proc () {
-	data, ok := os.read_entire_file(path.join(path.dir(#file), "./input.txt"))
-	if !ok {
-		fmt.println("Failed to read puzzle input.")
-		os.exit(1)
-	}
-
-	fmt.println("part1 answer is", solve_part1(string(data)))
-	fmt.println("part2 answer is", solve_part2(string(data)))
+	input := aoc.must_read_input("2015/04")
+	fmt.println("part1", part1(input))
+	fmt.println("part2", part2(input))
 }
 
-solve_part1 :: proc(input: string) -> (n: int) {
+part1 :: proc(input: string) -> (n: int) {
 	buf : [10]byte
 	for {
 		n += 1
@@ -67,7 +62,7 @@ solve_part1 :: proc(input: string) -> (n: int) {
 	return
 }
 
-solve_part2 :: proc(input: string) -> (n: int) {
+part2 :: proc(input: string) -> (n: int) {
 	buf : [10]byte
 	for {
 		n += 1
@@ -107,7 +102,7 @@ find_md5_hash_with_prefix :: proc(secret, prefix: string) -> (n: int) {
 }
 
 @(test)
-test_solve_part1 :: proc(t: ^testing.T) {
-	testing.expect_value(t, solve_part1("abcdef"), 609043)
-	testing.expect_value(t, solve_part1("pqrstuv"), 1048970)
+test_part1 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part1("abcdef"), 609043)
+	testing.expect_value(t, part1("pqrstuv"), 1048970)
 }

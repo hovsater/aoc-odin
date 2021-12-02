@@ -1,11 +1,9 @@
 package main
 
-import "core:container"
 import "core:fmt"
-import "core:os"
-import "core:path"
-import "core:slice"
 import "core:testing"
+
+import "../../aoc"
 
 /*
 
@@ -63,17 +61,12 @@ Point :: struct {
 }
 
 main :: proc () {
-	data, ok := os.read_entire_file(path.join(path.dir(#file), "./input.txt"))
-	if !ok {
-		fmt.println("Failed to read puzzle input.")
-		os.exit(1)
-	}
-
-	fmt.println("part1 answer is", solve_part1(string(data)))
-	fmt.println("part2 answer is", solve_part2(string(data)))
+	input := aoc.must_read_input("2015/03")
+	fmt.println("part1", part1(input))
+	fmt.println("part2", part2(input))
 }
 
-solve_part1 :: proc(input: string) -> int {
+part1 :: proc(input: string) -> int {
 	points := make(map[Point]int)
 	defer delete(points)
 
@@ -97,7 +90,7 @@ solve_part1 :: proc(input: string) -> int {
 	return len(points);
 }
 
-solve_part2 :: proc(input: string) -> (res: int) {
+part2 :: proc(input: string) -> (res: int) {
 	points := make(map[Point]int)
 	defer delete(points)
 
@@ -146,15 +139,15 @@ solve_part2 :: proc(input: string) -> (res: int) {
 
 
 @(test)
-test_solve_part1 :: proc(t: ^testing.T) {
-	testing.expect_value(t, solve_part1(">"), 2)
-	testing.expect_value(t, solve_part1("^>v<"), 4)
-	testing.expect_value(t, solve_part1("^v^v^v^v^v"), 2)
+test_part1 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part1(">"), 2)
+	testing.expect_value(t, part1("^>v<"), 4)
+	testing.expect_value(t, part1("^v^v^v^v^v"), 2)
 }
 
 @(test)
-test_solve_part2 :: proc(t: ^testing.T) {
-	testing.expect_value(t, solve_part2("^v"), 3)
-	testing.expect_value(t, solve_part2("^>v<"), 3)
-	testing.expect_value(t, solve_part2("^v^v^v^v^v"), 11)
+test_part2 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part2("^v"), 3)
+	testing.expect_value(t, part2("^>v<"), 3)
+	testing.expect_value(t, part2("^v^v^v^v^v"), 11)
 }

@@ -2,12 +2,12 @@ package main
 
 import "core:fmt"
 import "core:math"
-import "core:os"
-import "core:path"
 import "core:slice"
 import "core:strconv"
 import "core:strings"
 import "core:testing"
+
+import "../../aoc"
 
 /*
 
@@ -124,17 +124,12 @@ than the previous sum?
 */
 
 main :: proc() {
-	data, ok := os.read_entire_file(path.join(path.dir(#file), "./input.txt"))
-	if !ok {
-		fmt.println("Failed to read puzzle input.")
-		os.exit(1)
-	}
-
-	fmt.println("part1 answer is", solve_part1(string(data)))
-	fmt.println("part2 answer is", solve_part2(string(data)))
+	input := aoc.must_read_input("2021/01")
+	fmt.println("part1", part1(input))
+	fmt.println("part2", part2(input))
 }
 
-solve_part1 :: proc(input: string) -> (increases: int) {
+part1 :: proc(input: string) -> (increases: int) {
 	measurements := slice.mapper(strings.split(input, "\n"), strconv.atoi)
 	current_depth := measurements[0]
 	
@@ -146,7 +141,7 @@ solve_part1 :: proc(input: string) -> (increases: int) {
 	return
 }
 
-solve_part2 :: proc(input: string) -> (increases: int) {
+part2 :: proc(input: string) -> (increases: int) {
 	measurements := slice.mapper(strings.split(input, "\n"), strconv.atoi)
 	current_sum := math.sum(measurements[0:3])
 	
@@ -160,6 +155,6 @@ solve_part2 :: proc(input: string) -> (increases: int) {
 }
 
 @(test)
-test_solve_part2 :: proc(t: ^testing.T) {
-	testing.expect_value(t, solve_part2("199\n200\n208\n210\n200\n207\n240\n269\n260\n263"), 5)
+test_part2 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part2("199\n200\n208\n210\n200\n207\n240\n269\n260\n263"), 5)
 }

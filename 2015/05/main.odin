@@ -1,11 +1,10 @@
 package main
 
 import "core:fmt"
-import "core:os"
-import "core:path"
 import "core:strings"
 import "core:testing"
-import "core:unicode/utf8"
+
+import "../../aoc"
 
 /*
 
@@ -75,17 +74,12 @@ How many strings are nice under these new rules?
 */
 
 main :: proc () {
-	data, ok := os.read_entire_file(path.join(path.dir(#file), "./input.txt"))
-	if !ok {
-		fmt.println("Failed to read puzzle input.")
-		os.exit(1)
-	}
-
-	fmt.println("part1 answer is", solve_part1(string(data)))
-	fmt.println("part2 answer is", solve_part2(string(data)))
+	input := aoc.must_read_input("2015/05")
+	fmt.println("part1", part1(input))
+	fmt.println("part2", part2(input))
 }
 
-solve_part1 :: proc(input: string) -> (n: int) {
+part1 :: proc(input: string) -> (n: int) {
 	for line in strings.split(input, "\n") {
 		if is_nice(line) do n += 1
 	}
@@ -93,8 +87,8 @@ solve_part1 :: proc(input: string) -> (n: int) {
 	return
 }
 
-solve_part2 :: proc(input: string) -> (n: int) {
-	return
+part2 :: proc(input: string) -> (n: int) {
+	panic("part2 not implemented")
 }
 
 is_vowel :: proc(r: u8) -> bool {

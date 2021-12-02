@@ -2,11 +2,11 @@ package main
 
 import "core:fmt"
 import "core:slice"
-import "core:os"
-import "core:path"
 import "core:strconv"
 import "core:strings"
 import "core:testing"
+
+import "../../aoc"
 
 /*
 
@@ -59,17 +59,12 @@ How many total feet of ribbon should they order?
 */
 
 main :: proc () {
-	data, ok := os.read_entire_file(path.join(path.dir(#file), "./input.txt"))
-	if !ok {
-		fmt.println("Failed to read puzzle input.")
-		os.exit(1)
-	}
-
-	fmt.println("part1 answer is", solve_part1(string(data)))
-	fmt.println("part2 answer is", solve_part2(string(data)))
+	input := aoc.must_read_input("2015/02")
+	fmt.println("part1", part1(input))
+	fmt.println("part2", part2(input))
 }
 
-solve_part1 :: proc(input: string) -> (sum: int) {
+part1 :: proc(input: string) -> (sum: int) {
 	for line in strings.split(input, "\n") {
 		a, b, c := dimensions(line)
 		ab, bc, ca := a*b, b*c, c*a
@@ -80,7 +75,7 @@ solve_part1 :: proc(input: string) -> (sum: int) {
 	return;
 }
 
-solve_part2 :: proc(input: string) -> (sum: int) {
+part2 :: proc(input: string) -> (sum: int) {
 	for line in strings.split(input, "\n") {
 		a, b, c := dimensions(line)
 		if (a < b) {
@@ -97,18 +92,17 @@ solve_part2 :: proc(input: string) -> (sum: int) {
 dimensions :: proc(line: string) -> (int, int, int) {
 	d := slice.mapper(strings.split(line, "x"), strconv.atoi)
 	return d[0], d[1], d[2]
-
 }
 
 @(test)
-test_solve_part1 :: proc(t: ^testing.T) {
-	testing.expect_value(t, solve_part1("2x3x4"), 58)
-	testing.expect_value(t, solve_part1("4x3x2"), 58)
-	testing.expect_value(t, solve_part1("2x3x4\n1x1x10"), 101)
+test_part1 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part1("2x3x4"), 58)
+	testing.expect_value(t, part1("4x3x2"), 58)
+	testing.expect_value(t, part1("2x3x4\n1x1x10"), 101)
 }
 
 @(test)
-test_solve_part2 :: proc(t: ^testing.T) {
-	testing.expect_value(t, solve_part2("2x3x4"), 34)
-	testing.expect_value(t, solve_part2("2x3x4\n1x1x10"), 48)
+test_part2 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part2("2x3x4"), 34)
+	testing.expect_value(t, part2("2x3x4\n1x1x10"), 48)
 }

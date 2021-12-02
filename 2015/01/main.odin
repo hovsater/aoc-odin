@@ -7,6 +7,8 @@ import "core:path"
 import "core:slice"
 import "core:testing"
 
+import "../../aoc"
+
 /*
 
 --- Day 1: Not Quite Lisp ---
@@ -64,17 +66,12 @@ basement?
 */
 
 main :: proc() {
-	data, ok := os.read_entire_file(path.join(path.dir(#file), "./input.txt"))
-	if !ok {
-		fmt.println("Failed to read puzzle input.")
-		os.exit(1)
-	}
-
-	fmt.println("part1 answer is", solve_part1(string(data)))
-	fmt.println("part2 answer is", solve_part2(string(data)))
+	input := aoc.must_read_input("2015/01")
+	fmt.println("part1", part1(input))
+	fmt.println("part2", part2(input))
 }
 
-solve_part1 :: proc(input: string) -> (sum: int) {
+part1 :: proc(input: string) -> (sum: int) {
 	for r in input {
 		if r == '(' {
 			sum += 1
@@ -86,7 +83,7 @@ solve_part1 :: proc(input: string) -> (sum: int) {
 	return
 }
 
-solve_part2 :: proc(input: string) -> int {
+part2 :: proc(input: string) -> int {
 	sum := 0
 	for r, i in input {
 		if r == '(' {
@@ -104,15 +101,15 @@ solve_part2 :: proc(input: string) -> int {
 }
 
 @(test)
-test_solve_part1 :: proc(t: ^testing.T) {
-	testing.expect_value(t, solve_part1("(())"), 0)
-	testing.expect_value(t, solve_part1("))((((("), 3)
-	testing.expect_value(t, solve_part1(")())())"), -3)
+test_part1 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part1("(())"), 0)
+	testing.expect_value(t, part1("))((((("), 3)
+	testing.expect_value(t, part1(")())())"), -3)
 }
 
 @(test)
-test_solve_part2 :: proc(t: ^testing.T) {
-	testing.expect_value(t, solve_part2("((("), -1)
-	testing.expect_value(t, solve_part2("())"), 3)
-	testing.expect_value(t, solve_part2("))("), 1)
+test_part2 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part2("((("), -1)
+	testing.expect_value(t, part2("())"), 3)
+	testing.expect_value(t, part2("))("), 1)
 }

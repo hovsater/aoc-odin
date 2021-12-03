@@ -173,15 +173,13 @@ part1 :: proc(input: string) -> int {
 
 part2 :: proc(input: string) -> int {
 	numbers := strings.split(input, "\n")
-	bit_size := len(numbers[0])
-
-	oxygen := find_number(numbers[:], 0, bit_size, '1', '0')
-	co2 := find_number(numbers[:], 0, bit_size, '0', '1')
+	oxygen := find_number(numbers[:], 0, '1', '0')
+	co2 := find_number(numbers[:], 0, '0', '1')
 
 	return oxygen * co2
 }
 
-find_number :: proc(nums: []string, pos, bit_size: int, criteria_1, criteria_0: u8) -> int {
+find_number :: proc(nums: []string, pos, criteria_1, criteria_0: u8) -> int {
 	if len(nums) == 1 {
 		n, _ := strconv.parse_int(nums[0], 2)
 		return n
@@ -201,7 +199,7 @@ find_number :: proc(nums: []string, pos, bit_size: int, criteria_1, criteria_0: 
 		}
 	}
 
-	return find_number(new_nums[:], pos + 1, bit_size, criteria_1, criteria_0)
+	return find_number(new_nums[:], pos + 1, criteria_1, criteria_0)
 }
 
 @(test)

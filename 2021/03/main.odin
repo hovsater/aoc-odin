@@ -1,6 +1,7 @@
 package main
 
 import "core:fmt"
+import "core:slice"
 import "core:strconv"
 import "core:strings"
 import "core:testing"
@@ -152,8 +153,8 @@ main :: proc() {
 
 part1 :: proc(input: string) -> int {
 	numbers := strings.split(input, "\n")
-	bit_size := len(numbers[0])
-	bits_set := make([]int, bit_size)
+	num_bits := len(numbers[0])
+	bits_set := make([]int, num_bits)
 
 	for number in numbers {
 		for c, i in number do bits_set[i] += c == '1' ? 1 : 0
@@ -162,9 +163,9 @@ part1 :: proc(input: string) -> int {
 	gamma, epsilon: int
 	for c, i in bits_set {
 		if c >= len(numbers) - c {
-			gamma |= (1 << uint(bit_size - i - 1))
+			gamma |= (1 << uint(num_bits - i - 1))
 		} else {
-			epsilon |= (1 << uint(bit_size - i - 1))
+			epsilon |= (1 << uint(num_bits - i - 1))
 		}
 	}
 
@@ -173,33 +174,32 @@ part1 :: proc(input: string) -> int {
 
 part2 :: proc(input: string) -> int {
 	numbers := strings.split(input, "\n")
-	oxygen := find_number(numbers[:], 0, '1', '0')
-	co2 := find_number(numbers[:], 0, '0', '1')
+	slice.sort(numbers)
+
+	oxygen := find_number(numbers[:], false)
+	co2 := find_number(numbers[:], true)
 
 	return oxygen * co2
 }
 
-find_number :: proc(nums: []string, pos, criteria_1, criteria_0: u8) -> int {
-	if len(nums) == 1 {
-		n, _ := strconv.parse_int(nums[0], 2)
-		return n
-	}
+find_number :: proc(nums: []string, flip: bool) -> int {
+	i: int
+	temp := nums
+	for len(temp) > 1 {
+		zeroes: int
+		for n in temp do zeroes += n[i] == '0' ? 1 : 0
 
-	bits_set : int
-	for n in nums {
-		if n[pos] == '1' do bits_set += 1
-	}
-
-	new_nums : [dynamic]string
-	for n in nums {
-		if bits_set >= len(nums) - bits_set {
-			if n[pos] == criteria_1 do append(&new_nums, n)
+		if len(temp) - zeroes >= zeroes {
+			temp = flip ? temp[:zeroes] : temp[zeroes:]
 		} else {
-			if n[pos] == criteria_0 do append(&new_nums, n)
+			temp = flip ? temp[zeroes:] : temp[:zeroes]
 		}
+
+		i += 1
 	}
 
-	return find_number(new_nums[:], pos + 1, criteria_1, criteria_0)
+	n, _ := strconv.parse_int(temp[0], 2)
+	return n
 }
 
 @(test)

@@ -4,6 +4,8 @@ import "core:fmt"
 import "core:strconv"
 import "core:testing"
 import "core:text/scanner"
+import "core:strings"
+import "core:slice"
 
 import "../../aoc"
 
@@ -87,38 +89,19 @@ part2 :: proc(input: string) -> (sum: int) {
 }
 
 @(private)
-parse_input :: proc(input: string) -> (
-	numbers: [dynamic]int,
-	boards: [dynamic]Board,
-) {
-	s := scanner.init(new(scanner.Scanner), input)
-	s.whitespace -= {'\n'}
+parse_input :: proc(input: string) -> ([]int, [dynamic]Board) {
+	lines := strings.split(input, "\n\n")
+	numbers := slice.mapper(strings.split(lines[0], ","), strconv.atoi)
 
-	for scanner.scan(s) != '\n' {
-		if num, ok := strconv.parse_int(scanner.token_text(s)); ok {
-			append(&numbers, num)
+	boards: [dynamic]Board
+	for line, i in lines[1:] {
+		append(&boards, Board{})
+		for num, j in slice.mapper(strings.fields(line), strconv.atoi) {
+			boards[i].numbers[num] = BoardNumber{num, (j + 5) / 5, j % 5 + 1, false}
 		}
 	}
 
-	i: int
-	board: Board
-	s.whitespace += {'\n'}
-	for scanner.scan(s) != scanner.EOF {
-		if i == 5 * 5 {
-			append(&boards, board)
-			board = Board{}
-			i = 0
-		}
-
-		if num, ok := strconv.parse_int(scanner.token_text(s)); ok {
-			board.numbers[num] = BoardNumber{num, (i + 5) / 5, i % 5 + 1, false}
-			i += 1
-		}
-	}
-
-	append(&boards, board)
-
-	return
+	return numbers, boards
 }
 
 @(test)

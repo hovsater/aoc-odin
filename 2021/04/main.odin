@@ -1,10 +1,9 @@
 package main
 
 import "core:fmt"
-import "core:slice"
 import "core:strconv"
-import "core:strings"
 import "core:testing"
+import "core:text/scanner"
 
 import "../../aoc"
 
@@ -18,6 +17,11 @@ Board :: struct {
 	numbers:                map[int]BoardNumber,
 	row_counts, col_counts: map[int]int,
 	is_solved:              bool,
+}
+
+BoardNumber :: struct {
+	value, row, col: int,
+	is_marked:       bool,
 }
 
 board_sum_unmarked :: proc(b: ^Board) -> (sum: int) {
@@ -36,15 +40,8 @@ board_mark_number :: proc(b: ^Board, n: ^BoardNumber) -> (int, int) {
 	return b.row_counts[n.row], b.col_counts[n.col]
 }
 
-BoardNumber :: struct {
-	value, row, col: int,
-	is_marked:       bool,
-}
-
 part1 :: proc(input: string) -> (sum: int) {
-	lines := strings.split(input, "\n")
-	numbers := slice.mapper(strings.split(lines[0], ","), strconv.atoi)
-	boards := parse_boards(lines[2:])
+	numbers, boards := parse_input(input)
 
 	loop: for v in numbers {
 		for board in &boards {
@@ -52,8 +49,8 @@ part1 :: proc(input: string) -> (sum: int) {
 				row_count, col_count := board_mark_number(&board, number)
 				if row_count == 5 || col_count == 5 {
 					board.is_solved = true
-
 					sum = board_sum_unmarked(&board) * number.value
+
 					break loop
 				}
 			}
@@ -64,11 +61,9 @@ part1 :: proc(input: string) -> (sum: int) {
 }
 
 part2 :: proc(input: string) -> (sum: int) {
-	lines := strings.split(input, "\n")
-	numbers := slice.mapper(strings.split(lines[0], ","), strconv.atoi)
-	boards := parse_boards(lines[2:])
-
+	numbers, boards := parse_input(input)
 	boards_unsolved := len(boards)
+
 	loop: for v in numbers {
 		for board in &boards {
 			if board.is_solved do continue
@@ -92,31 +87,36 @@ part2 :: proc(input: string) -> (sum: int) {
 }
 
 @(private)
-parse_boards :: proc(lines: []string) -> (boards: [dynamic]Board) {
-	i, row: int
+parse_input :: proc(input: string) -> (
+	numbers: [dynamic]int,
+	boards: [dynamic]Board,
+) {
+	s := scanner.init(new(scanner.Scanner), input)
+	s.whitespace -= {'\n'}
 
-	append(&boards, Board{})
-	for line in lines {
-		if line == "" {
-			append(&boards, Board{})
-			i += 1
-			row = 0
-			continue
+	for scanner.scan(s) != '\n' {
+		if num, ok := strconv.parse_int(scanner.token_text(s)); ok {
+			append(&numbers, num)
 		}
-
-		is_not_empty :: proc(s: string) -> bool {
-			return len(s) != 0
-		}
-
-		for n, col in slice.mapper(
-			slice.filter(strings.split(line, " "), is_not_empty),
-			strconv.atoi,
-		) {
-			boards[i].numbers[n] = BoardNumber{n, row, col, false}
-		}
-
-		row += 1
 	}
+
+	i: int
+	board: Board
+	s.whitespace += {'\n'}
+	for scanner.scan(s) != scanner.EOF {
+		if i == 5 * 5 {
+			append(&boards, board)
+			board = Board{}
+			i = 0
+		}
+
+		if num, ok := strconv.parse_int(scanner.token_text(s)); ok {
+			board.numbers[num] = BoardNumber{num, (i + 5) / 5, i % 5 + 1, false}
+			i += 1
+		}
+	}
+
+	append(&boards, board)
 
 	return
 }

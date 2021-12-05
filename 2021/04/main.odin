@@ -3,7 +3,6 @@ package main
 import "core:fmt"
 import "core:strconv"
 import "core:testing"
-import "core:text/scanner"
 import "core:strings"
 import "core:slice"
 

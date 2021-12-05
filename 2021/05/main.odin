@@ -20,7 +20,7 @@ main :: proc() {
 	fmt.println("part2", part2(input))
 }
 
-part1 :: proc(input: string) -> (count: int) {
+part1 :: proc(input: string) -> (overlaps: int) {
 	line_segments := parse_input(input)
 	counts: map[Vector2]int
 
@@ -44,13 +44,13 @@ part1 :: proc(input: string) -> (count: int) {
 	}
 
 	for _, v in counts {
-		if v > 1 do count += 1
+		if v > 1 do overlaps += 1
 	}
 
 	return
 }
 
-part2 :: proc(input: string) -> (count: int) {
+part2 :: proc(input: string) -> (overlaps: int) {
 	line_segments := parse_input(input)
 	counts: map[Vector2]int
 
@@ -65,7 +65,7 @@ part2 :: proc(input: string) -> (count: int) {
 	}
 
 	for _, v in counts {
-		if v > 1 do count += 1
+		if v > 1 do overlaps += 1
 	}
 
 	return

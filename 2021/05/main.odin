@@ -59,13 +59,7 @@ count_overlaps :: proc(
 
 @(private)
 slope :: proc(v: Vector2) -> Vector2 {
-	sign :: proc(n: int) -> int {
-		if n > 0 do return 1
-		if n < 0 do return -1
-		return 0
-	}
-
-	return Vector2{sign(v.x), sign(v.y)}
+	return Vector2{max(min(v.x, 1), -1), max(min(v.y, 1), -1)}
 }
 
 @(private)

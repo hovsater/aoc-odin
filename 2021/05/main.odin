@@ -20,48 +20,34 @@ main :: proc() {
 	fmt.println("part2", part2(input))
 }
 
-part1 :: proc(input: string) -> (overlaps: int) {
+part1 :: proc(input: string) -> int {
 	line_segments := parse_input(input)
-	counts: map[Vector2]int
-
-	for segment in line_segments {
-		delta := segment.b - segment.a
-		if delta.x != 0 && delta.y != 0 do continue
-
-		if delta.x == 0 {
-			dir := direction(delta.y)
-			counts[segment.b] += 1
-			for y := segment.a.y; y != segment.b.y; y += dir {
-				counts[{segment.a.x, y}] += 1
-			}
-		} else {
-			dir := direction(delta.x)
-			counts[segment.b] += 1
-			for x := segment.a.x; x != segment.b.x; x += dir {
-				counts[{x, segment.a.y}] += 1
-			}
-		}
-	}
-
-	for _, v in counts {
-		if v > 1 do overlaps += 1
-	}
-
-	return
+	return count_overlaps(line_segments[:])
 }
 
-part2 :: proc(input: string) -> (overlaps: int) {
+part2 :: proc(input: string) -> int {
 	line_segments := parse_input(input)
-	counts: map[Vector2]int
+	return count_overlaps(line_segments[:], true)
+}
 
+@(private)
+count_overlaps :: proc(
+	line_segments: []LineSegment,
+	count_diagonals := false,
+) -> (
+	overlaps: int,
+) {
+	counts: map[Vector2]int
 	for segment in line_segments {
 		delta := segment.b - segment.a
-		dir := direction(delta)
+		if !count_diagonals && delta.x != 0 && delta.y != 0 do continue
 
-		counts[segment.b] += 1
-		for p := segment.a; p != segment.b; p += dir {
+		s := slope(delta)
+		for p := segment.a; p != segment.b; p += s {
 			counts[p] += 1
 		}
+
+		counts[segment.b] += 1
 	}
 
 	for _, v in counts {
@@ -71,22 +57,15 @@ part2 :: proc(input: string) -> (overlaps: int) {
 	return
 }
 
-
-direction :: proc {
-	direction_n,
-	direction_vector,
-}
-
 @(private)
-direction_n :: proc(n: int) -> int {
-	if n > 0 do return 1
-	if n < 0 do return -1
-	return 0
-}
+slope :: proc(v: Vector2) -> Vector2 {
+	sign :: proc(n: int) -> int {
+		if n > 0 do return 1
+		if n < 0 do return -1
+		return 0
+	}
 
-@(private)
-direction_vector :: proc(delta: Vector2) -> Vector2 {
-	return Vector2{direction(delta.x), direction(delta.y)}
+	return Vector2{sign(v.x), sign(v.y)}
 }
 
 @(private)

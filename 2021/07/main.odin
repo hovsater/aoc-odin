@@ -23,7 +23,6 @@ part1 :: proc(input: string) -> int {
 	return minimum_fuel(numbers, fuel_calculator)
 }
 
-
 part2 :: proc(input: string) -> int {
 	numbers := parse_input(input)
 	fuel_calculator :: proc(position, number: int) -> int {

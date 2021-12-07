@@ -24,7 +24,7 @@ part1 :: proc(input: string) -> int {
 }
 
 
-part2 :: proc(input: string) -> (count: int) {
+part2 :: proc(input: string) -> int {
 	fish_by_age := parse_input(input)
 	return simulate(&fish_by_age, 256)
 }

@@ -49,24 +49,18 @@ part2 :: proc(input: string) -> (sum: int) {
 		}
 
 		// Find 2, 5 and 6
-		i, two_five_six := 0, [3]string{}
 		for pattern in patterns {
 			if slice.contains(numbers[:], pattern) do continue
 			if segment_count(numbers[1], pattern) == 1 {
-				two_five_six[i] = pattern
-				i += 1
-			}
-		}
-
-		for pattern in two_five_six {
-			switch len(pattern) {
-				case 6: numbers[6] = pattern
-				case 5:
-					if segment_count(numbers[4], pattern) == 2 {
-						numbers[2] = pattern
-					} else {
-						numbers[5] = pattern
-					}
+				switch len(pattern) {
+					case 6: numbers[6] = pattern
+					case 5:
+						if segment_count(numbers[4], pattern) == 2 {
+							numbers[2] = pattern
+						} else {
+							numbers[5] = pattern
+						}
+				}
 			}
 		}
 

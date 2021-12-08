@@ -52,28 +52,17 @@ part2 :: proc(input: string) -> (sum: int) {
 		for pattern in patterns {
 			if slice.contains(numbers[:], pattern) do continue
 
-			if equal_segments(numbers[1], pattern) == 1 {
-				switch len(pattern) {
-				case 6:
-					numbers[6] = pattern
-				case 5:
-					if equal_segments(numbers[4], pattern) == 2 {
-						numbers[2] = pattern
-					} else {
-						numbers[5] = pattern
-					}
-				}
-			} else {
-				switch equal_segments(numbers[8], pattern) {
-				case 5:
-					numbers[3] = pattern
-				case 6:
-					if equal_segments(numbers[4], pattern) == 4 {
-						numbers[9] = pattern
-					} else {
-						numbers[0] = pattern
-					}
-				}
+			s1 := count_equal_segments(numbers[1], pattern)
+			s4 := count_equal_segments(numbers[4], pattern)
+			s8 := count_equal_segments(numbers[8], pattern)
+
+			switch len(pattern) + s1 + s4 + s8 {
+				case 13: numbers[2] = pattern
+				case 14: numbers[5] = pattern
+				case 15: numbers[3] = pattern
+				case 16: numbers[6] = pattern
+				case 17: numbers[0] = pattern
+				case 18: numbers[9] = pattern
 			}
 		}
 
@@ -91,7 +80,7 @@ part2 :: proc(input: string) -> (sum: int) {
 	return
 }
 
-equal_segments :: proc(s1, s2: string) -> (count: int) {
+count_equal_segments :: proc(s1, s2: string) -> (count: int) {
 	for c in s1 {
 		if strings.contains_rune(s2, c) != -1 do count += 1
 	}
@@ -112,7 +101,6 @@ bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbg
 egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
 gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce`
 
-
 	testing.expect_value(t, part1(input), 26)
 }
 
@@ -128,7 +116,6 @@ dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbc
 bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef
 egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
 gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce`
-
 
 	testing.expect_value(t, part2(input), 61229)
 }

@@ -26,18 +26,68 @@ Grid :: struct {
 part1 :: proc(input: string) -> (sum: int) {
 	grid := parse_input(input)
 
-	for p, v in grid.points {
-		if u, ok := grid.points[{p.x, p.y - 1}]; ok && v >= u do continue
-		if d, ok := grid.points[{p.x, p.y + 1}]; ok && v >= d do continue
-		if l, ok := grid.points[{p.x - 1, p.y}]; ok && v >= l do continue
-		if r, ok := grid.points[{p.x + 1, p.y}]; ok && v >= r do continue
+	loop: for p, v in grid.points {
+		for n in point_neighbours(&grid, p) {
+			if v >= grid.points[n] do continue loop
+		}
+
 		sum += v + 1
 	}
 
 	return
 }
 
-part2 :: proc(input: string) -> (sum: int) {
+part2 :: proc(input: string) -> int {
+	grid := parse_input(input)
+	basins: [dynamic]int
+
+	loop: for p, v in grid.points {
+		for n in point_neighbours(&grid, p) {
+			if v >= grid.points[n] do continue loop
+		}
+
+		append(&basins, basin_of_point(&grid, p))
+	}
+
+	slice.sort(basins[:])
+
+	sum := 1; for b in basins[len(basins)-3:] do sum *= b
+
+	return sum
+}
+
+basin_of_point :: proc(grid: ^Grid, p: Point) -> (count: int) {
+	queue := [dynamic]Point{p}
+	visited := map[Point]bool{p = true}
+
+	count += 1
+	for len(queue) != 0 {
+		c := pop_front(&queue)
+		for n in point_neighbours(grid, c) {
+			if ok := n in visited; ok do continue
+			visited[n] = true
+
+			if grid.points[n] != 9 {
+				append(&queue, n)
+				count += 1
+			}
+		}
+	}
+
+	return
+}
+
+point_neighbours :: proc(grid: ^Grid, p: Point) -> (neighbours: [dynamic]Point) {
+	n := Point{p.x, p.y - 1}
+	s := Point{p.x, p.y + 1}
+	w := Point{p.x - 1, p.y}
+	e := Point{p.x + 1, p.y}
+
+	if ok := n in grid.points; ok do append(&neighbours, n)
+	if ok := s in grid.points; ok do append(&neighbours, s)
+	if ok := w in grid.points; ok do append(&neighbours, w)
+	if ok := e in grid.points; ok do append(&neighbours, e)
+
 	return
 }
 
@@ -72,5 +122,5 @@ test_part2 :: proc(t: ^testing.T) {
 8767896789
 9899965678`
 
-	testing.expect_value(t, part2(input), 0)
+	testing.expect_value(t, part2(input), 1134)
 }

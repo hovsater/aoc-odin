@@ -14,31 +14,42 @@ main :: proc() {
 	fmt.println("part2", part2(input))
 }
 
+Point :: struct {
+	x, y: int,
+}
+
+Grid :: struct {
+	width, height: int,
+	points: map[Point]int,
+}
+
 part1 :: proc(input: string) -> (sum: int) {
-	lines := strings.split(input, "\n")
+	grid := parse_input(input)
 
-	grid: [dynamic]int
-	for line in lines {
-		for c in line do append(&grid, int(c - '0'))
-	}
-
-	h := len(grid)
-	w := len(lines[0])
-	for e, i in grid {
-		switch {
-		case i - w >= 0 && e >= grid[i - w],
-		     i + w <= h - 1 && e >= grid[i + w],
-			 i - 1 >= 0 && i / w == (i - 1) / w && e >= grid[i - 1],
-		     i + 1 <= h - 1 && i / w == (i + 1) / w && e >= grid[i + 1]: continue
-		}
-
-		sum += e + 1
+	for p, v in grid.points {
+		if u, ok := grid.points[{p.x, p.y - 1}]; ok && v >= u do continue
+		if d, ok := grid.points[{p.x, p.y + 1}]; ok && v >= d do continue
+		if l, ok := grid.points[{p.x - 1, p.y}]; ok && v >= l do continue
+		if r, ok := grid.points[{p.x + 1, p.y}]; ok && v >= r do continue
+		sum += v + 1
 	}
 
 	return
 }
 
 part2 :: proc(input: string) -> (sum: int) {
+	return
+}
+
+parse_input :: proc (input: string) -> (grid: Grid) {
+	lines := strings.split(input, "\n")
+	grid.width = len(lines[0])
+	grid.height = len(lines)
+
+	for line, i in lines {
+		for c, j in line do grid.points[Point{j, i}] = int(c - '0')
+	}
+
 	return
 }
 

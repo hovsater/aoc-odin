@@ -60,11 +60,9 @@ part2 :: proc(input: string) -> int {
 			}
 		}
 
-		slice.reverse(open_chunks[:])
-
 		score: int
-		for c in open_chunks {
-			score = (score * 5) + rune_points[pair_map[c]]
+		for i := len(open_chunks) - 1; i >= 0; i -= 1 {
+			score = (score * 5) + rune_points[pair_map[open_chunks[i]]]
 		}
 
 		append(&line_scores, score)

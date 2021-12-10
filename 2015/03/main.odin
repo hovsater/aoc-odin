@@ -5,9 +5,7 @@ import "core:testing"
 
 import "../../aoc"
 
-Point :: struct {
-	x, y: int,
-}
+Point :: [2]int
 
 main :: proc () {
 	input := aoc.must_read_input("2015/03")

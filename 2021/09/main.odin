@@ -14,9 +14,7 @@ main :: proc() {
 	fmt.println("part2", part2(input))
 }
 
-Point :: struct {
-	x, y: int,
-}
+Point :: [2]int
 
 Grid :: struct {
 	width, height: int,

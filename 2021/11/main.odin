@@ -1,8 +1,6 @@
 package main
 
 import "core:fmt"
-import "core:slice"
-import "core:strconv"
 import "core:strings"
 import "core:testing"
 
@@ -23,6 +21,7 @@ part1 :: proc(input: string) -> (flashes: int) {
 
 	for _ in 0..<100 {
 		flashed: map[Octopus]bool
+		defer delete(flashed)
 
 		for octopus in grid {
 			grid[octopus] += 1
@@ -32,10 +31,7 @@ part1 :: proc(input: string) -> (flashes: int) {
 			}
 		}
 
-		for octopus in flashed {
-			grid[octopus] = 0
-		}
-
+		for octopus in flashed do grid[octopus] = 0
 	}
 
 	return
@@ -46,6 +42,7 @@ part2 :: proc(input: string) -> int {
 
 	for step := 1 ;; step += 1 {
 		flashed: map[Octopus]bool
+		defer delete(flashed)
 
 		for octopus in grid {
 			grid[octopus] += 1
@@ -55,12 +52,9 @@ part2 :: proc(input: string) -> int {
 			}
 		}
 
-		for octopus in flashed {
-			grid[octopus] = 0
-		}
+		for octopus in flashed do grid[octopus] = 0
 
 		if len(flashed) == width * height do return step
-
 	}
 }
 
@@ -109,16 +103,6 @@ neighbours :: proc(grid: ^Grid, octopus: Octopus) -> (neighbours: [dynamic]Octop
 	}
 
 	return
-}
-
-print_grid :: proc(width, height: int, grid: ^Grid) {
-	for y in 0..<height {
-		for x in 0..<width {
-			fmt.printf("{}", grid[{x, y}])
-		}
-		fmt.printf("\n")
-	}
-	fmt.printf("\n")
 }
 
 @(test)

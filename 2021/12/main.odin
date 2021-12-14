@@ -3,7 +3,6 @@ package main
 import "core:fmt"
 import "core:strings"
 import "core:testing"
-import "core:slice"
 
 import "../../aoc"
 

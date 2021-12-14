@@ -116,7 +116,8 @@ find_paths_iterative :: proc(cave: ^Cave, revisit_once: bool) -> (count: int) {
 			if !is_small(neighbouring_cave) {
 				append(&stack, CavePath{neighbouring_cave, path.visited, path.revisit_once})
 			} else if !path.visited[neighbouring_cave] {
-				new_visited := map[^Cave]bool{neighbouring_cave = true}
+				new_visited := make(map[^Cave]bool, len(path.visited) + 1)
+				new_visited[neighbouring_cave] = true
 				for k, v in path.visited do new_visited[k] = v
 				append(&stack, CavePath{neighbouring_cave, new_visited, path.revisit_once})
 			} else if path.revisit_once {

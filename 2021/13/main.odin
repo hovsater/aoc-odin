@@ -1,6 +1,7 @@
 package main
 
 import "core:fmt"
+import "core:slice"
 import "core:strconv"
 import "core:strings"
 import "core:testing"
@@ -8,9 +9,10 @@ import "core:testing"
 import "../../aoc"
 
 Point :: distinct [2]int
+
 Grid :: struct {
 	width, height: int,
-	points: map[Point]int,
+	points: map[Point]bool,
 }
 
 Fold_X :: distinct int
@@ -39,33 +41,23 @@ part2 :: proc(input: string) {
 
 fold_grid :: proc(grid: ^Grid, folds: []Fold) {
 	for fold in folds {
-		switch v in fold {
+		switch f in fold {
 		case Fold_X:
-			for x:= int(v) + 1; x < grid.width; x += 1 {
-				for y := 0; y < grid.height; y += 1 {
-					point := Point{x, y}
-					if point in grid.points {
-						new_point := Point{int(v) - (point.x - int(v)), y }
-						grid.points[new_point] = 0
-						delete_key(&grid.points, point)
-					}
-				}
+			x := int(f)
+			for p in slice.map_keys(grid.points) {
+				if p.x <= x do continue
+				grid.points[{x - (p.x - x), p.y}] = true
+				delete_key(&grid.points, p)
 			}
-
-			grid.width -= int(v) + 1
+			grid.width -= x + 1
 		case Fold_Y:
-			for y:= int(v) + 1; y < grid.height; y += 1 {
-				for x := 0; x < grid.width; x += 1 {
-					point := Point{x, y}
-					if point in grid.points {
-						new_point := Point{x, int(v) - (point.y - int(v))}
-						grid.points[new_point] = 0
-						delete_key(&grid.points, point)
-					}
-				}
+			y := int(f)
+			for p in slice.map_keys(grid.points) {
+				if p.y <= y do continue
+				grid.points[{p.x, y - (p.y - y)}] = true
+				delete_key(&grid.points, p)
 			}
-
-			grid.height -= int(v) + 1
+			grid.height -= y + 1
 		}
 	}
 }
@@ -104,7 +96,7 @@ parse_input :: proc(input: string) -> (grid: Grid, folds: [dynamic]Fold) {
 		if x > max_x do max_x = x
 		if y > max_y do max_y = y
 
-		grid.points[{x, y}] = 0
+		grid.points[{x, y}] = true
 	}
 
 	grid.width = max_x + 1

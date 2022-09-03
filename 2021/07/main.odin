@@ -33,7 +33,7 @@ part2 :: proc(input: string) -> int {
 	return minimum_fuel(numbers, fuel_calculator)
 }
 
-minimum_fuel :: proc(numbers: []int, f: proc(int, int) -> int) -> int {
+minimum_fuel :: proc(numbers: []int, f: proc(_: int, _: int) -> int) -> int {
 	moves: map[int]int
 
 	for p := numbers[0]; p <= numbers[len(numbers) - 1]; p += 1 {

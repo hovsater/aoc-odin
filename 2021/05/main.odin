@@ -31,12 +31,7 @@ part2 :: proc(input: string) -> int {
 }
 
 @(private)
-count_overlaps :: proc(
-	line_segments: []LineSegment,
-	count_diagonals := false,
-) -> (
-	overlaps: int,
-) {
+count_overlaps :: proc(line_segments: []LineSegment, count_diagonals := false) -> (overlaps: int) {
 	counts: map[Vector2]int
 	for segment in line_segments {
 		delta := segment.b - segment.a

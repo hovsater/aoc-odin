@@ -6,7 +6,7 @@ import "core:testing"
 
 import "../../aoc"
 
-main :: proc () {
+main :: proc() {
 	input := aoc.must_read_input("2015/05")
 	fmt.println("part1", part1(input))
 	fmt.println("part2", part2(input))
@@ -34,9 +34,9 @@ is_vowel :: proc(r: u8) -> bool {
 }
 
 is_nice :: proc(input: string) -> bool {
-	vowels : int
-	repeating_letter : bool
-	contains_bad_substrings : bool
+	vowels: int
+	repeating_letter: bool
+	contains_bad_substrings: bool
 
 	for _, i in input[:len(input)] {
 		r := input[i]
@@ -44,7 +44,7 @@ is_nice :: proc(input: string) -> bool {
 		if is_vowel(r) do vowels += 1
 
 		if i < len(input) - 1 {
-			rr := input[i+1]
+			rr := input[i + 1]
 			str := string([]byte{r, rr})
 
 			if r == rr do repeating_letter = true

@@ -14,7 +14,7 @@ Pair_Insertion_Rules :: distinct map[string]rune
 
 Polymer :: struct {
 	letters: Letters,
-	pairs: Pairs,
+	pairs:   Pairs,
 }
 
 main :: proc() {
@@ -46,14 +46,14 @@ part2 :: proc(input: string) -> u64 {
 grow_polymer :: proc(polymer: ^Polymer, rules: ^Pair_Insertion_Rules, step: u8) {
 	new_pairs := make(Pairs, len(polymer.pairs))
 
-	for _ in 0..<step {
+	for _ in 0 ..< step {
 		for pair, count in polymer.pairs do if count > 0 {
-			letter := rules[pair]
-			polymer.letters[letter] += count
-			new_pairs[utf8.runes_to_string({utf8.rune_at_pos(pair, 0), letter})] += count
-			new_pairs[utf8.runes_to_string({letter, utf8.rune_at_pos(pair, 1)})] += count
-			new_pairs[pair] -= count
-		}
+				letter := rules[pair]
+				polymer.letters[letter] += count
+				new_pairs[utf8.runes_to_string({utf8.rune_at_pos(pair, 0), letter})] += count
+				new_pairs[utf8.runes_to_string({letter, utf8.rune_at_pos(pair, 1)})] += count
+				new_pairs[pair] -= count
+			}
 
 		for pair, count in new_pairs do polymer.pairs[pair] += count
 		clear(&new_pairs)
@@ -93,7 +93,7 @@ parse_input :: proc(input: string) -> (Polymer, Pair_Insertion_Rules) {
 	polymer.letters[utf8.rune_at_pos(template, 0)] += 1
 	for i := 1; i < len(template); i += 1 {
 		polymer.letters[utf8.rune_at_pos(template, i)] += 1
-		polymer.pairs[template[i-1:i+1]] += 1
+		polymer.pairs[template[i - 1:i + 1]] += 1
 	}
 
 	return polymer, rules

@@ -31,7 +31,7 @@ part2 :: proc(input: string) -> (increases: int) {
 	measurements := slice.mapper(strings.split(input, "\n"), strconv.atoi)
 
 	for i := 3; i < len(measurements); i += 1 {
-		if measurements[i] > measurements[i-3] do increases += 1
+		if measurements[i] > measurements[i - 3] do increases += 1
 	}
 
 	return

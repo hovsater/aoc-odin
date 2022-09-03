@@ -7,7 +7,7 @@ import "../../aoc"
 
 Point :: [2]int
 
-main :: proc () {
+main :: proc() {
 	input := aoc.must_read_input("2015/03")
 	fmt.println("part1", part1(input))
 	fmt.println("part2", part2(input))
@@ -34,7 +34,7 @@ part1 :: proc(input: string) -> int {
 		points[Point{x, y}] += 1
 	}
 
-	return len(points);
+	return len(points)
 }
 
 part2 :: proc(input: string) -> (res: int) {
@@ -81,7 +81,7 @@ part2 :: proc(input: string) -> (res: int) {
 		}
 	}
 
-	return len(points);
+	return len(points)
 }
 
 

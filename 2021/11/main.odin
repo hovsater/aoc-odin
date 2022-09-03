@@ -19,7 +19,7 @@ main :: proc() {
 part1 :: proc(input: string) -> (flashes: int) {
 	width, height, grid := parse_input(input)
 
-	for _ in 0..<100 {
+	for _ in 0 ..< 100 {
 		flashed: map[Octopus]bool
 		defer delete(flashed)
 
@@ -40,7 +40,7 @@ part1 :: proc(input: string) -> (flashes: int) {
 part2 :: proc(input: string) -> int {
 	width, height, grid := parse_input(input)
 
-	for step := 1 ;; step += 1 {
+	for step := 1;; step += 1 {
 		flashed: map[Octopus]bool
 		defer delete(flashed)
 
@@ -58,7 +58,13 @@ part2 :: proc(input: string) -> int {
 	}
 }
 
-count_flashes :: proc(grid: ^Grid, octopus: Octopus, flashed: ^map[Octopus]bool) -> (flashes: int) {
+count_flashes :: proc(
+	grid: ^Grid,
+	octopus: Octopus,
+	flashed: ^map[Octopus]bool,
+) -> (
+	flashes: int,
+) {
 	if ok := octopus in flashed; ok do return
 
 	flashed[octopus] = true

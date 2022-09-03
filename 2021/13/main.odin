@@ -12,12 +12,15 @@ Point :: distinct [2]int
 
 Grid :: struct {
 	width, height: int,
-	points: map[Point]bool,
+	points:        map[Point]bool,
 }
 
 Fold_X :: distinct int
 Fold_Y :: distinct int
-Fold :: union{Fold_X, Fold_Y}
+Fold :: union {
+	Fold_X,
+	Fold_Y,
+}
 
 main :: proc() {
 	input := aoc.must_read_input("2021/13")

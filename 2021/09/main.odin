@@ -18,7 +18,7 @@ Point :: [2]int
 
 Grid :: struct {
 	width, height: int,
-	points: map[Point]int,
+	points:        map[Point]int,
 }
 
 part1 :: proc(input: string) -> (sum: int) {
@@ -49,14 +49,16 @@ part2 :: proc(input: string) -> int {
 
 	slice.sort(basins[:])
 
-	sum := 1; for b in basins[len(basins)-3:] do sum *= b
+	sum := 1;for b in basins[len(basins) - 3:] do sum *= b
 
 	return sum
 }
 
 basin_of_point :: proc(grid: ^Grid, p: Point) -> (count: int) {
 	queue := [dynamic]Point{p}
-	visited := map[Point]bool{p = true}
+	visited := map[Point]bool {
+		p = true,
+	}
 
 	count += 1
 	for len(queue) != 0 {
@@ -89,7 +91,7 @@ point_neighbours :: proc(grid: ^Grid, p: Point) -> (neighbours: [dynamic]Point) 
 	return
 }
 
-parse_input :: proc (input: string) -> (grid: Grid) {
+parse_input :: proc(input: string) -> (grid: Grid) {
 	lines := strings.split(input, "\n")
 	grid.width = len(lines[0])
 	grid.height = len(lines)

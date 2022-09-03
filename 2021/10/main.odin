@@ -26,7 +26,12 @@ main :: proc() {
 }
 
 part1 :: proc(input: string) -> (sum: int) {
-	rune_points := map[rune]int{')' = 3, ']' = 57, '}' = 1197, '>' = 25137}
+	rune_points := map[rune]int {
+		')' = 3,
+		']' = 57,
+		'}' = 1197,
+		'>' = 25137,
+	}
 
 	for line in strings.split(input, "\n") {
 		open_chunks: [dynamic]rune
@@ -45,7 +50,12 @@ part1 :: proc(input: string) -> (sum: int) {
 }
 
 part2 :: proc(input: string) -> int {
-	rune_points := map[rune]int{')' = 1, ']' = 2, '}' = 3, '>' = 4}
+	rune_points := map[rune]int {
+		')' = 1,
+		']' = 2,
+		'}' = 3,
+		'>' = 4,
+	}
 	line_scores: [dynamic]int
 
 	loop: for line in strings.split(input, "\n") {

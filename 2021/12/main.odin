@@ -10,7 +10,7 @@ CAVE_START :: "start"
 CAVE_END :: "end"
 
 Cave :: struct {
-	name: string,
+	name:     string,
 	passages: [dynamic]^Cave,
 }
 
@@ -57,7 +57,7 @@ parse_input :: proc(input: string) -> (caves: map[string]^Cave) {
 		defer delete(names)
 
 		for name in names {
-			if name not_in caves do caves[name] = new_clone(Cave{name=name})
+			if name not_in caves do caves[name] = new_clone(Cave{name = name})
 		}
 
 		append(&caves[names[0]].passages, caves[names[1]])
@@ -67,7 +67,13 @@ parse_input :: proc(input: string) -> (caves: map[string]^Cave) {
 	return
 }
 
-find_paths_recursive :: proc(cave: ^Cave, caves_visited: ^map[^Cave]u8, revisit_once: bool) -> (count: int) {
+find_paths_recursive :: proc(
+	cave: ^Cave,
+	caves_visited: ^map[^Cave]u8,
+	revisit_once: bool,
+) -> (
+	count: int,
+) {
 	revisit_once := revisit_once
 
 	if is_end(cave) do return 1
@@ -77,7 +83,7 @@ find_paths_recursive :: proc(cave: ^Cave, caves_visited: ^map[^Cave]u8, revisit_
 		revisit_once = false
 	}
 
-	if is_small(cave) do caves_visited[cave] +=1
+	if is_small(cave) do caves_visited[cave] += 1
 
 	for neighbouring_cave in cave.passages {
 		if is_start(neighbouring_cave) do continue
@@ -90,18 +96,18 @@ find_paths_recursive :: proc(cave: ^Cave, caves_visited: ^map[^Cave]u8, revisit_
 }
 
 CavePath :: struct {
-	current: ^Cave,
-	visited: map[^Cave]bool,
+	current:      ^Cave,
+	visited:      map[^Cave]bool,
 	revisit_once: bool,
 }
 
 
 find_paths_iterative :: proc(cave: ^Cave, revisit_once: bool) -> (count: int) {
-	stack : [dynamic]CavePath
+	stack: [dynamic]CavePath
 	initial_path := CavePath{cave, {cave = true}, revisit_once}
 	append(&stack, initial_path)
 
-	for len(stack) != 0  {
+	for len(stack) != 0 {
 		path := pop(&stack)
 
 		if is_end(path.current) {

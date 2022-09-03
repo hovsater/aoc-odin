@@ -41,10 +41,14 @@ part2 :: proc(input: string) -> (sum: int) {
 		// Find 1, 4, 7 and 8
 		for pattern in patterns {
 			switch len(pattern) {
-			case 2: numbers[1] = pattern
-			case 4: numbers[4] = pattern
-			case 3: numbers[7] = pattern
-			case 7: numbers[8] = pattern
+			case 2:
+				numbers[1] = pattern
+			case 4:
+				numbers[4] = pattern
+			case 3:
+				numbers[7] = pattern
+			case 7:
+				numbers[8] = pattern
 			}
 		}
 
@@ -57,12 +61,18 @@ part2 :: proc(input: string) -> (sum: int) {
 			s8 := count_equal_segments(numbers[8], pattern)
 
 			switch len(pattern) + s1 + s4 + s8 {
-				case 13: numbers[2] = pattern
-				case 14: numbers[5] = pattern
-				case 15: numbers[3] = pattern
-				case 16: numbers[6] = pattern
-				case 17: numbers[0] = pattern
-				case 18: numbers[9] = pattern
+			case 13:
+				numbers[2] = pattern
+			case 14:
+				numbers[5] = pattern
+			case 15:
+				numbers[3] = pattern
+			case 16:
+				numbers[6] = pattern
+			case 17:
+				numbers[0] = pattern
+			case 18:
+				numbers[9] = pattern
 			}
 		}
 

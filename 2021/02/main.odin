@@ -14,18 +14,18 @@ main :: proc() {
 }
 
 part1 :: proc(input: string) -> int {
-	position, depth : int
+	position, depth: int
 	for line in strings.split(input, "\n") {
 		parts := strings.split(line, " ")
 		value := strconv.atoi(parts[1])
 
 		switch parts[0] {
-			case "up":
-				depth -= value
-			case "down":
-				depth += value
-			case "forward":
-				position += value
+		case "up":
+			depth -= value
+		case "down":
+			depth += value
+		case "forward":
+			position += value
 		}
 	}
 
@@ -33,19 +33,19 @@ part1 :: proc(input: string) -> int {
 }
 
 part2 :: proc(input: string) -> int {
-	position, depth, aim : int
+	position, depth, aim: int
 	for line in strings.split(input, "\n") {
 		parts := strings.split(line, " ")
 		value := strconv.atoi(parts[1])
 
 		switch parts[0] {
-			case "up":
-				aim -= value
-			case "down":
-				aim += value
-			case "forward":
-				position += value
-				depth += aim * value
+		case "up":
+			aim -= value
+		case "down":
+			aim += value
+		case "forward":
+			position += value
+			depth += aim * value
 		}
 	}
 

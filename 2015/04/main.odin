@@ -8,14 +8,14 @@ import "core:testing"
 
 import "../../aoc"
 
-main :: proc () {
+main :: proc() {
 	input := aoc.must_read_input("2015/04")
 	fmt.println("part1", part1(input))
 	fmt.println("part2", part2(input))
 }
 
 part1 :: proc(input: string) -> (n: int) {
-	buf : [10]byte
+	buf: [10]byte
 	for {
 		n += 1
 		str := strings.concatenate([]string{input, strconv.itoa(buf[:], n)})
@@ -34,7 +34,7 @@ part1 :: proc(input: string) -> (n: int) {
 }
 
 part2 :: proc(input: string) -> (n: int) {
-	buf : [10]byte
+	buf: [10]byte
 	for {
 		n += 1
 		str := strings.concatenate([]string{input, strconv.itoa(buf[:], n)})
@@ -54,7 +54,7 @@ part2 :: proc(input: string) -> (n: int) {
 
 @(private)
 find_md5_hash_with_prefix :: proc(secret, prefix: string) -> (n: int) {
-	buf : [10]byte
+	buf: [10]byte
 	for {
 		n += 1
 		str := strings.concatenate([]string{secret, strconv.itoa(buf[:], n)})

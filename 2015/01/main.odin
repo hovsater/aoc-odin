@@ -1,10 +1,6 @@
 package main
 
 import "core:fmt"
-import "core:math"
-import "core:os"
-import "core:path"
-import "core:slice"
 import "core:testing"
 
 import "../../aoc"

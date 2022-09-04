@@ -1,7 +1,6 @@
 package main
 
 import "core:fmt"
-import "core:slice"
 import "core:strings"
 import "core:testing"
 import "core:unicode/utf8"

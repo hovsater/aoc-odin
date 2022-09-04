@@ -5,8 +5,12 @@ import "core:os"
 import "core:path/filepath"
 
 must_read_input :: proc(name: string) -> string {
-  path_parts := [?]string{filepath.dir(#file), "..", name, "input.txt"}
+	file_dir := filepath.dir(#file)
+	defer delete(file_dir)
+
+	path_parts := [?]string{file_dir, "..", name, "input.txt"}
 	puzzle_path := filepath.join(path_parts[:])
+	defer delete(puzzle_path)
 
 	data, ok := os.read_entire_file(puzzle_path)
 	if !ok {

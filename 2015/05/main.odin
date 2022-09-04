@@ -9,12 +9,17 @@ import "../../aoc"
 
 main :: proc() {
 	input := aoc.must_read_input("2015/05")
+	defer delete(input)
+
 	fmt.println("part1", part1(input))
 	fmt.println("part2", part2(input))
 }
 
 part1 :: proc(input: string) -> (n: int) {
-	for line in strings.split(input, "\n") {
+	lines := strings.split(input, "\n")
+	defer delete(lines)
+
+	for line in lines {
 		if is_nice(line) do n += 1
 	}
 
@@ -22,7 +27,10 @@ part1 :: proc(input: string) -> (n: int) {
 }
 
 part2 :: proc(input: string) -> (n: int) {
-	for line in strings.split(input, "\n") {
+	lines := strings.split(input, "\n")
+	defer delete(lines)
+
+	for line in lines {
 		if is_nice_new(line) do n += 1
 	}
 
@@ -88,7 +96,10 @@ is_nice_new :: proc(input: string) -> bool {
 		}
 	}
 
-	return repeating_letters_with_gap > 0 && slice.max(slice.map_values(pair_counts)) > 1
+	counts := slice.map_values(pair_counts)
+	defer delete(counts)
+
+	return repeating_letters_with_gap > 0 && slice.max(counts) > 1
 }
 
 @(test)

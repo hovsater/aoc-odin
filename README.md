@@ -5,6 +5,10 @@ Solutions to [Advent of Code](https://adventofcode.com) in
 
 | Year | Day | Part 1 | Part 2 |
 | :---: | :---: | :---: | :---: |
+| 2022 | 1 | ✅ | ✅ |
+
+| Year | Day | Part 1 | Part 2 |
+| :---: | :---: | :---: | :---: |
 | 2021 | 1 | ✅ | ✅ |
 | 2021 | 2 | ✅ | ✅ |
 | 2020 | 3 | ✅ | ✅ |

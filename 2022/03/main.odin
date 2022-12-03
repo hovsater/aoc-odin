@@ -1,6 +1,7 @@
 package main
 
 import "core:fmt"
+import "core:intrinsics"
 import "core:strings"
 import "core:testing"
 
@@ -17,8 +18,8 @@ part1 :: proc(input: string) -> (sum: int) {
 	defer delete(lines)
 
 	for line in lines {
-		item_type := int(line[strings.index_any(line[:len(line) / 2], line[len(line) / 2:])])
-		sum += item_type < 'a' ? item_type - 'A' + 27 : item_type - 'a' + 1
+		item_type := line[strings.index_any(line[:len(line) / 2], line[len(line) / 2:])]
+		sum += priority(item_type)
 	}
 
 	return
@@ -28,24 +29,23 @@ part2 :: proc(input: string) -> (sum: int) {
 	lines := strings.split_lines(input)
 	defer delete(lines)
 
-	Char_Set :: bit_set['A' ..= 'z']
+	Char_Set :: bit_set['A' ..= 'z';u64]
 
 	for i := 0; i < len(lines); i += 3 {
-		sa, sb, sc, sd: Char_Set
-		for c in lines[i] do incl(&sa, c)
-		for c in lines[i + 1] do incl(&sb, c)
-		for c in lines[i + 2] do incl(&sc, c)
-		sd = sa & sb & sc
-
-		for c in 'A' ..= 'z' {
-			if c in sd {
-				sum += int(c < 'a' ? c - 'A' + 27 : c - 'a' + 1)
-				break
-			}
-		}
+		s1, s2, s3: Char_Set
+		for c in lines[i] do incl(&s1, c)
+		for c in lines[i + 1] do incl(&s2, c)
+		for c in lines[i + 2] do incl(&s3, c)
+		item_type := u8('A' + intrinsics.count_trailing_zeros(transmute(u64)(s1 & s2 & s3)))
+		sum += priority(item_type)
 	}
 
 	return
+}
+
+@(private)
+priority :: proc(c: u8) -> int {
+	return int(c < 'a' ? c - 'A' + 27 : c - 'a' + 1)
 }
 
 @(test)

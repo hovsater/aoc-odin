@@ -18,7 +18,7 @@ main :: proc() {
 part1 :: proc(input: string) -> (count: int) {
 	splits := [3]string{"\n", "-", ","}
 	values := slice.mapper(strings.split_multi(input, splits[:]), strconv.atoi)
-
+	defer delete(values)
 
 	for i := 0; i + 3 < len(values); i += 4 {
 		a1, a2 := values[i], values[i + 1]
@@ -32,7 +32,7 @@ part1 :: proc(input: string) -> (count: int) {
 part2 :: proc(input: string) -> (count: int) {
 	splits := [3]string{"\n", "-", ","}
 	values := slice.mapper(strings.split_multi(input, splits[:]), strconv.atoi)
-
+	defer delete(values)
 
 	for i := 0; i + 3 < len(values); i += 4 {
 		a1, a2 := values[i], values[i + 1]
